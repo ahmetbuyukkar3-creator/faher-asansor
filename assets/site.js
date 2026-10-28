@@ -92,6 +92,9 @@
   portal.insertBefore(preview,veil);
 
   var lenis=new Lenis({duration:1.2,smoothWheel:true,autoResize:true});
+  // Sahne ekrana basilan konuma bakar. Telefonda Lenis'in ic degeri gercek kaydirmadan
+  // ayrilabiliyor; o zaman kare dongusu durup gorsel donuk kaliyordu.
+  function pos(){var a=lenis.actualScroll;return typeof a==='number'?a:(window.scrollY||window.pageYOffset||0)}
   window.faherScroll=lenis;
   var burger=$('#burger'), menu=$('#mnav'), main=$('main');
   function setOpen(open,focus){
@@ -130,7 +133,7 @@
   var words=mf.querySelectorAll('.w');
   var statement=$('#statement'), pin=statement.querySelector('.stage-pin');
   var film=pin.querySelector('.stage-film'), filmImage=film.querySelector('img'), cap=pin.querySelector('.stage-cap');
-  var metrics={}, lastY=NaN, lastLit=-1, lastProgress=-1, lastStage=-1, assetsReady=false;
+  var metrics={}, lastY=NaN, lastLit=-1, lastProgress=-1, lastStage=-1, lastVisible=null, assetsReady=false;
   var revealObserver=new IntersectionObserver(function(entries){
     entries.forEach(function(entry){
       if(entry.isIntersecting){entry.target.classList.add('in');revealObserver.unobserve(entry.target)}
@@ -141,7 +144,7 @@
   // containment/estimated height: real and portal copies share identical CSS.
   function measure(){
     layout();
-    var y=lenis.scroll, sr=statement.getBoundingClientRect(), mr=mf.getBoundingClientRect();
+    var y=pos(), sr=statement.getBoundingClientRect(), mr=mf.getBoundingClientRect();
     metrics={start:lift.getBoundingClientRect().top+y,total:lift.offsetHeight-stage.offsetHeight,
       vh:stage.clientHeight, statementTop:sr.top+y,statementHeight:sr.height,
       mfTop:mr.top+y,mfHeight:mr.height,mobile:innerWidth<820};
@@ -152,9 +155,16 @@
   function scheduleMeasure(){clearTimeout(measureTimer);measureTimer=setTimeout(measure,80)}
   var observer=new ResizeObserver(scheduleMeasure);
   [stage,realHero,statement,mf].forEach(function(el){observer.observe(el)});
+  var tick=0;
   function frame(t){
     lenis.raf(t);
-    var y=lenis.scroll;
+    var y=pos();
+    // Nobetci: sahne olculeri sayfadan kayarsa (telefonda adres cubugu, yon degisimi,
+    // gec yuklenen gorsel) kimse haber vermese de kendiliginden yeniden olc.
+    if(assetsReady && ++tick%20===0){
+      var kayma=Math.abs(Math.round(lift.getBoundingClientRect().top+y)-metrics.start);
+      if(kayma>2 || Math.abs(lift.offsetHeight-stage.offsetHeight-metrics.total)>2)measure();
+    }
     if(assetsReady && y!==lastY){
       var dy=Number.isNaN(lastY)?0:y-lastY;lastY=y;
       var p=clamp((y-metrics.start)/Math.max(1,metrics.total));
@@ -162,6 +172,7 @@
       // At y = start + total, sticky top and normal-flow hero top are both 0.
       // Beyond it both move by exactly -(y-start-total), including large jumps.
       var siteVisible=y>=metrics.start+metrics.total;
+      if(siteVisible!==lastVisible){lastVisible=siteVisible;scene(p);lastProgress=p}
       d.body.classList.toggle('site-visible',siteVisible);
       lift.classList.toggle('lift-active',!siteVisible);
       top.classList.toggle('intro',p<.96);
@@ -190,6 +201,10 @@
   measure();
   window.addEventListener('resize',function(){scheduleMeasure();if(innerWidth>960 && d.body.classList.contains('open'))setOpen(false,false)});
   window.addEventListener('pageshow',scheduleMeasure);
+  window.addEventListener('orientationchange',scheduleMeasure);
+  if(window.visualViewport)window.visualViewport.addEventListener('resize',scheduleMeasure);
+  // Tarayici kaydirmayi kendi oynattiginda (adres cubugu, kaydirma capasi) kare yenilensin.
+  window.addEventListener('scroll',function(){lastY=NaN},{passive:true});
   if(d.fonts)d.fonts.ready.then(scheduleMeasure);
   // Decode lobby, cabin, signs and both copies of the portal photos before use.
   var introImages=Array.from(lift.querySelectorAll('img')).concat(Array.from(realHero.querySelectorAll('img')));

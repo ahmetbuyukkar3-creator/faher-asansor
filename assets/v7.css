@@ -44,6 +44,9 @@ body.open .mnav{clip-path:none;transform:translate3d(0,0,0)}
 .lightbox-foot span{white-space:nowrap;font-variant-numeric:tabular-nums}
 body.lightbox-open{overflow:hidden}
 @media(max-width:820px){
+ /* Telefonda katman ipucu acilip kapanmasin: bazi cihazlarda sahne donup kaliyor. */
+ .lift-active .cam,.lift-active .leaf,.leaf{will-change:auto}
+ .lift-active .portal{will-change:auto}
  .brand img{height:46px;width:auto}
  .gallery-head{flex-wrap:wrap;gap:10px}
  .gallery-head h3{flex-basis:100%}
