@@ -122,6 +122,7 @@
     });
   }
 
+  const built = [];
   categories.forEach(category => {
     const row = document.createElement('section');
     row.className = 'gallery-row';
@@ -170,5 +171,46 @@
     };
     measure();
     new ResizeObserver(measure).observe(grid);
+    built.push({row, measure, count: category.photos.length});
   });
+
+  /* Telefonda galeri 19 ekran surdugu ve Hizmetler bolumunu gomdugu icin ilk iki bolum
+     gosterilir, kalani dugmeyle acilir. Katli satirlar display:none oldugundan lazy
+     gorseller de inmez. Masaustunde galeri tam haliyle kalir. */
+  const FOLD = 2;
+  const query = window.matchMedia('(max-width: 820px)');
+  const rest = built.slice(FOLD);
+  let opened = false;
+
+  if (rest.length) {
+    const hiddenPhotos = rest.reduce((sum, item) => sum + item.count, 0);
+    const more = document.createElement('button');
+    more.type = 'button';
+    more.className = 'gallery-more';
+    more.hidden = true;
+    more.append(document.createTextNode('Kalan fotoğrafları göster'));
+    const badge = document.createElement('span');
+    badge.textContent = '(' + String(hiddenPhotos).padStart(2, '0') + ')';
+    more.append(badge);
+    host.append(more);
+    rest.forEach(item => { item.row.querySelector('h3').tabIndex = -1; });
+
+    function fold() {
+      if (opened) return;
+      const on = query.matches;
+      rest.forEach(item => { item.row.hidden = on; });
+      more.hidden = !on;
+    }
+    more.addEventListener('click', () => {
+      opened = true;
+      more.hidden = true;
+      rest.forEach(item => { item.row.hidden = false; item.measure(); });
+      rest[0].row.querySelector('h3').focus({preventScroll: true});
+    });
+    fold();
+    // Eski Android tarayicilarinda matchMedia'nin addEventListener'i olmayabilir.
+    if (query.addEventListener) query.addEventListener('change', fold);
+    else if (query.addListener) query.addListener(fold);
+    else window.addEventListener('resize', fold);
+  }
 })();
