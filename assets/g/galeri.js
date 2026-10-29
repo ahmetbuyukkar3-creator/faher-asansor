@@ -297,15 +297,6 @@ window.FAHER_GALERI = {
      "largeWidth": 1275,
      "largeHeight": 1700,
      "caption": "Makine ve motor grubu · 04"
-    },
-    {
-     "thumb": "assets/g/makine05t.webp",
-     "large": "assets/g/makine05b.webp",
-     "width": 675,
-     "height": 900,
-     "largeWidth": 1275,
-     "largeHeight": 1700,
-     "caption": "Makine ve motor grubu · 05"
     }
    ]
   },
@@ -350,6 +341,15 @@ window.FAHER_GALERI = {
      "largeWidth": 1275,
      "largeHeight": 1700,
      "caption": "Kumanda panosu ve modernizasyon · 04"
+    },
+    {
+     "thumb": "assets/g/kumanda05t.webp",
+     "large": "assets/g/kumanda05b.webp",
+     "width": 675,
+     "height": 900,
+     "largeWidth": 1275,
+     "largeHeight": 1700,
+     "caption": "Kumanda panosu ve modernizasyon · 05"
     }
    ]
   },
@@ -537,6 +537,50 @@ window.FAHER_GALERI = {
      "largeWidth": 1275,
      "largeHeight": 1700,
      "caption": "Tamamlanan projeler · 10"
+    }
+   ]
+  },
+  {
+   "id": "okul",
+   "title": "Okul projesi",
+   "summary": "Okul binasına kurulan asansör: taş çerçeveli çelik kapı, cam kabin ve kat butonları.",
+   "visible": true,
+   "photos": [
+    {
+     "thumb": "assets/g/okul01t.webp",
+     "large": "assets/g/okul01b.webp",
+     "width": 675,
+     "height": 900,
+     "largeWidth": 1086,
+     "largeHeight": 1448,
+     "caption": "Okul projesi · 01"
+    },
+    {
+     "thumb": "assets/g/okul02t.webp",
+     "large": "assets/g/okul02b.webp",
+     "width": 675,
+     "height": 900,
+     "largeWidth": 1275,
+     "largeHeight": 1700,
+     "caption": "Okul projesi · 02"
+    },
+    {
+     "thumb": "assets/g/okul03t.webp",
+     "large": "assets/g/okul03b.webp",
+     "width": 675,
+     "height": 900,
+     "largeWidth": 1275,
+     "largeHeight": 1700,
+     "caption": "Okul projesi · 03"
+    },
+    {
+     "thumb": "assets/g/okul04t.webp",
+     "large": "assets/g/okul04b.webp",
+     "width": 675,
+     "height": 900,
+     "largeWidth": 1275,
+     "largeHeight": 1700,
+     "caption": "Okul projesi · 04"
     }
    ]
   },

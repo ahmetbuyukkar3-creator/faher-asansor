@@ -17,7 +17,9 @@
     desk:{src:'assets/lobi-yatay.webp',iw:2736,ih:1536,door:[.395,.226,.211,.571],panel:[.381,.118,.237,.073]},
     phone:{src:'assets/lobi-dikey.webp',iw:1536,ih:2736,door:[.257,.261,.486,.456],panel:[.25,.13,.52,.087]}
   };
-  var CAB={iw:1664,ih:2512,ox:.112,ow:.773,oy:.02,mirror:[.352,.247,.283,.203]};
+  // Bronz kabin render'i (1160x1355). Portal artik ayna degil, arka duvardaki FAHER logosu.
+  // ow 0.773 -> 0.665: gorsel eskisinden genis, dusurulmezse telefonda kapi altinda bosluk kaliyor.
+  var CAB={iw:1160,ih:1355,ox:.157,ow:.665,oy:.025,mirror:[.358,.248,.244,.227]};
 
   function clamp(v){return v<0?0:v>1?1:v}
   function ease(t){return 1-Math.pow(1-t,3)}

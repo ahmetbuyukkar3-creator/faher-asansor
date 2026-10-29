@@ -23,14 +23,25 @@ body.open .mnav{clip-path:none;transform:translate3d(0,0,0)}
 .brand img{height:50px;width:auto}
 /* content-visibility kaldirildi: satirlar olculmeden once 900/1200px tahmin ediliyordu,
    gercekleri 367-1833px cikinca sayfa boyu kaydirma sirasinda 4671px oynuyordu. */
-.gallery-row{margin-bottom:clamp(54px,7vw,100px)}
-.gallery-head{display:flex;align-items:baseline;gap:20px;border-top:1px solid var(--line);padding:28px 0 12px}
-.gallery-sum{color:var(--gray);max-width:64ch;margin:0 0 20px;font-size:15px;line-height:1.5}
-.gallery-head h3{font-size:clamp(32px,4.8vw,76px);font-weight:400;letter-spacing:-.05em;line-height:1.06;flex:1;min-width:0}
+.gallery-row{margin-bottom:clamp(30px,3.6vw,54px)}
+.gallery-head{display:flex;align-items:baseline;gap:20px;border-top:1px solid var(--line);padding:20px 0 8px}
+.gallery-sum{color:var(--gray);max-width:64ch;margin:0 0 14px;font-size:14px;line-height:1.5}
+.gallery-head h3{font-size:clamp(23px,2.9vw,42px);font-weight:400;letter-spacing:-.04em;line-height:1.1;flex:1;min-width:0}
 .gallery-head em{font-weight:300;color:var(--navy)}
 .lightbox button{width:46px;height:46px;border:1px solid var(--line);border-radius:0;font-size:22px;flex:none}
-.gallery-grid{display:flex;flex-wrap:wrap;align-content:flex-start;justify-content:center}
-.gallery-photo{flex:0 0 auto;margin-bottom:14px;background:var(--bg-2);border:0;padding:0;border-radius:var(--r);overflow:hidden;cursor:zoom-in}
+/* Yatay serit: sayfa kisa kalsin diye fotograflar kucuk durur, pop-up'ta buyur. */
+.gallery-strip-wrap{position:relative}
+.gallery-strip{overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;scrollbar-width:none;scroll-snap-type:x proximity;padding-bottom:2px}
+.gallery-strip::-webkit-scrollbar{display:none}
+.gallery-strip:focus-visible{outline:2px solid var(--accent);outline-offset:4px}
+.gallery-track{display:flex;gap:10px;width:max-content}
+.gallery-photo{flex:0 0 auto;scroll-snap-align:start;background:var(--bg-2);border:0;padding:0;border-radius:var(--r);overflow:hidden;cursor:zoom-in}
+/* Kenardaki solma seridin devami oldugunu soyler; sona gelince kalkar. */
+.gallery-strip-wrap::before,.gallery-strip-wrap::after{content:"";position:absolute;top:0;bottom:0;width:56px;pointer-events:none;opacity:0;transition:opacity .3s var(--ease);z-index:1}
+.gallery-strip-wrap::before{left:0;background:linear-gradient(to left,rgba(255,255,255,0),var(--bg))}
+.gallery-strip-wrap::after{right:0;background:linear-gradient(to right,rgba(255,255,255,0),var(--bg))}
+.gallery-strip-wrap.has-prev::before{opacity:1}
+.gallery-strip-wrap.has-more::after{opacity:1}
 .gallery-photo:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 .gallery-photo img{display:block;width:100%;height:100%;object-fit:cover;user-select:none;transition:transform .5s var(--ease)}
 @media (hover:hover){.gallery-photo:hover img{transform:scale(1.04)}}
@@ -52,8 +63,7 @@ body.lightbox-open{overflow:hidden}
  .brand img{height:46px;width:auto}
  .gallery-head{flex-wrap:wrap;gap:10px}
  .gallery-head h3{flex-basis:100%}
- .gallery-photo{margin-bottom:8px}
- .gallery-sum{font-size:14px;margin-bottom:16px}
+ .gallery-sum{font-size:13px;margin-bottom:12px}
  .lightbox{padding:12px}.lightbox-foot{gap:10px;flex-wrap:wrap}
  .lightbox-foot #lightbox-caption{flex-basis:100%;order:5}
 }
@@ -103,16 +113,22 @@ main{margin-top:-100vh;margin-top:-100svh}
 .giris-yok .hdr.intro{color:#0b1530;background:#fff}
 .giris-yok .hdr.intro .brand,.giris-yok .hdr.intro .nav{visibility:visible;pointer-events:auto}
 
-/* v10: telefonda galeri katlamasi. Satir gizlenince yer kaplamasin, dugme kose-sifir kalsin. */
-.gallery-row[hidden]{display:none}
-.gallery-more{display:none}
+/* FAHER yazisinin altindaki odul seridi. Sade kalsin diye tek ince cizgi ve bronz vurgu. */
+.award-bar{display:flex;align-items:center;gap:clamp(12px,1.8vw,22px);
+  margin:clamp(14px,1.8vw,24px) 0 0;padding:clamp(12px,1.3vw,17px) clamp(14px,1.5vw,20px);
+  border:1px solid var(--line);border-radius:0;color:var(--ink);text-decoration:none;
+  background:linear-gradient(100deg,rgba(154,123,69,.06),rgba(154,123,69,0) 56%);
+  transition:border-color .55s var(--ease),background .55s var(--ease)}
+.award-bar:hover{border-color:#c9ab74;background:linear-gradient(100deg,rgba(154,123,69,.11),rgba(154,123,69,0) 62%)}
+.award-mark{display:flex;flex:none;color:#9a7b45}
+.award-txt{display:flex;flex-direction:column;gap:4px;flex:1;min-width:0}
+.award-txt em{font-style:normal;font-size:clamp(9px,.95vw,11px);letter-spacing:.24em;
+  text-transform:uppercase;color:var(--gray)}
+.award-txt b{font-weight:400;font-size:clamp(13px,1.45vw,19px);letter-spacing:-.015em;line-height:1.25}
+.award-yr{flex:none;font-size:clamp(19px,2.3vw,32px);font-weight:300;color:#9a7b45;letter-spacing:-.03em}
+.award-go{flex:none;color:var(--gray);font-size:13px}
 @media (max-width:820px){
-  .gallery-more{display:flex;align-items:center;justify-content:center;gap:10px;
-    width:100%;min-height:52px;padding:0 20px;margin:4px 0 clamp(54px,7vw,100px);
-    border:1px solid var(--ink);border-radius:0;background:var(--bg);color:var(--ink);
-    font-family:var(--font);font-size:14px;font-weight:500;letter-spacing:.02em;cursor:pointer}
-  .gallery-more span{color:var(--gray);font-size:13px;letter-spacing:.14em}
-  .gallery-more:active{background:var(--ink);color:#fff}
-  .gallery-more:active span{color:#9aa6bd}
-  .gallery-more:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+  .award-bar{gap:12px;padding:12px 13px;min-height:52px}
+  .award-txt b{font-size:13px}
+  .award-go{display:none}
 }
