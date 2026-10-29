@@ -2,6 +2,10 @@
   var d=document, root=d.documentElement;
   root.classList.add('js');
   var $=function(s){return d.querySelector(s)};
+  // Eski/zayif telefon tarayicilarinda bir satir patlarsa site hic acilmasin diye
+  // her sey korumali. Hata olursa giris atlanir, site duz haliyle gorunur.
+  try{
+  var sabitMod=innerWidth<=820;
   var lift=$('#giris'), stage=$('.lift-stage'), cam=$('.cam'), lobby=$('.lobby'), plate=$('.plate'), door=$('.door');
   var cabin=$('.cabin'), etch=$('.etch'), leafL=$('.leaf-l'), leafR=$('.leaf-r');
   var hero=$('.intro-hero'), shade=$('.shade'), portal=$('.portal'), veil=$('.portal-veil'), top=$('.hdr');
@@ -77,24 +81,34 @@
       veil.style.opacity=String(1-clamp(e*1.6));
 
     } else portal.style.visibility='hidden';
+
+    // Sabit modda (telefon) finali portal degil, sahnenin solmasi yapiyor.
+    if(sabitMod)stage.style.opacity=String(1-clamp((p-.86)/.14));
   }
 
 
   // The portal previews the exact hero. The real hero meets it at the same
   // viewport coordinates (main overlaps the last 100svh of the intro).
-  var realHero=$('main .hero'), preview=realHero.cloneNode(true);
-  preview.removeAttribute('id'); preview.removeAttribute('aria-label');
-  preview.querySelectorAll('[id]').forEach(function(el){el.removeAttribute('id')});
-  var clonedHeading=preview.querySelector('h1'), clonedText=d.createElement('div');
-  clonedText.className=clonedHeading.className; clonedText.innerHTML=clonedHeading.innerHTML;
-  clonedHeading.replaceWith(clonedText);
-  preview.querySelectorAll('img').forEach(function(el){el.loading='eager'});
-  portal.insertBefore(preview,veil);
+  // Telefonda portal (hero'nun kopyasi) kullanilmiyor: sahne sabit katman olarak
+  // sonunda soluyor. Kopyayi kurmak bosuna ikinci kez gorsel yukletiyordu.
+  var realHero=$('main .hero'), portalHazir=false;
+  function klonKur(){
+    if(portalHazir)return; portalHazir=true;
+    var preview=realHero.cloneNode(true);
+    preview.removeAttribute('id'); preview.removeAttribute('aria-label');
+    preview.querySelectorAll('[id]').forEach(function(el){el.removeAttribute('id')});
+    var clonedHeading=preview.querySelector('h1'), clonedText=d.createElement('div');
+    clonedText.className=clonedHeading.className; clonedText.innerHTML=clonedHeading.innerHTML;
+    clonedHeading.replaceWith(clonedText);
+    preview.querySelectorAll('img').forEach(function(el){el.loading='eager'});
+    portal.insertBefore(preview,veil);
+  }
+  if(!sabitMod)klonKur();
 
-  var lenis=new Lenis({duration:1.2,smoothWheel:true,autoResize:true});
-  // Sahne ekrana basilan konuma bakar. Telefonda Lenis'in ic degeri gercek kaydirmadan
-  // ayrilabiliyor; o zaman kare dongusu durup gorsel donuk kaliyordu.
-  function pos(){var a=lenis.actualScroll;return typeof a==='number'?a:(window.scrollY||window.pageYOffset||0)}
+  // Lenis eski tarayicida patlayabiliyor. Patlarsa site normal kaydirmayla calissin.
+  var lenis=null;
+  try{if(window.Lenis)lenis=new Lenis({duration:1.2,smoothWheel:true,autoResize:true})}catch(e){}
+  function pos(){var a=lenis&&lenis.actualScroll;return typeof a==='number'?a:(window.scrollY||window.pageYOffset||root.scrollTop||0)}
   window.faherScroll=lenis;
   var burger=$('#burger'), menu=$('#mnav'), main=$('main');
   function setOpen(open,focus){
@@ -155,15 +169,19 @@
     root.style.setProperty('--ivh',h+'px');
   }
   function measure(){
+    sabitMod=innerWidth<=820;
+    if(!sabitMod){klonKur();stage.style.opacity=''}
     layout();
     var y=pos(), sr=statement.getBoundingClientRect(), mr=mf.getBoundingClientRect();
     // start duz yerlesim degeri. Kaydirma degeriyle hesaplanirsa telefonda suruklenip
-    // gecis esigini kaydiriyor.
-    metrics={start:lift.offsetTop,total:lift.offsetHeight-stage.offsetHeight,
+    // gecis esigini kaydiriyor. Sabit modda sahne yapiskan degil, o yuzden kaydirma
+    // payi bosluk bolumunun tamami.
+    metrics={start:lift.offsetTop,
+      total:sabitMod?lift.offsetHeight:lift.offsetHeight-stage.offsetHeight,
       vh:stage.clientHeight, statementTop:sr.top+y,statementHeight:sr.height,
       mfTop:mr.top+y,mfHeight:mr.height,mobile:innerWidth<820};
     lastY=NaN;lastProgress=-1;lastStage=-1;lastVisible=null;
-    lenis.resize();
+    if(lenis)lenis.resize();
   }
   var measureTimer;
   function scheduleMeasure(){clearTimeout(measureTimer);measureTimer=setTimeout(measure,80)}
@@ -171,7 +189,7 @@
   [stage,realHero,statement,mf].forEach(function(el){observer.observe(el)});
   var tick=0;
   function frame(t){
-    lenis.raf(t);
+    if(lenis)lenis.raf(t);
     var y=pos();
     // Nobetci: sahne olculeri sayfadan kayarsa (telefonda adres cubugu, yon degisimi,
     // gec yuklenen gorsel) kimse haber vermese de kendiliginden yeniden olc.
@@ -230,8 +248,35 @@
   // Decode lobby, cabin, signs and both copies of the portal photos before use.
   var introImages=Array.from(lift.querySelectorAll('img')).concat(Array.from(realHero.querySelectorAll('img')));
   introImages.forEach(function(img){img.loading='eager'});
-  Promise.all(introImages.map(function(img){return img.decode().catch(function(){})})).then(function(){
-    assetsReady=true;measure();
-  });
+  function hazir(){if(!assetsReady){assetsReady=true;measure()}}
+  try{
+    Promise.all(introImages.map(function(img){
+      return img.decode?img.decode().catch(function(){}):null;
+    })).then(hazir,hazir);
+  }catch(e){hazir()}
+  // Bir gorsel gec gelirse ya da hic gelmezse sahne sonsuza kadar donuk kalmasin.
+  setTimeout(hazir,1800);
   requestAnimationFrame(frame);
+
+  if(/[?&]tani/.test(location.search)){
+    var tani=d.createElement('div');
+    tani.style.cssText='position:fixed;left:0;right:0;bottom:0;z-index:99;background:rgba(0,0,0,.82);color:#6f6;font:11px/1.35 monospace;padding:6px;white-space:pre-wrap';
+    d.body.appendChild(tani);
+    setInterval(function(){
+      tani.textContent='y='+Math.round(pos())+'  p='+(lastProgress<0?'-':lastProgress.toFixed(3))
+        +'  total='+metrics.total+'  ivh='+root.style.getPropertyValue('--ivh')+'  ih='+innerHeight
+        +'\nsabit='+sabitMod+'  lenis='+(lenis?'var':'YOK')+'  hazir='+assetsReady
+        +'  site='+d.body.classList.contains('site-visible')
+        +'\nsahne='+Math.round(stage.getBoundingClientRect().top)
+        +'  hero='+Math.round(realHero.getBoundingClientRect().top)
+        +'  sayfa='+root.scrollHeight
+        +'\n'+navigator.userAgent.slice(0,88);
+    },250);
+  }
+  }catch(hata){
+    // Giris kurulamadi: musteri yine de siteyi gorsun.
+    root.classList.add('giris-yok');
+    d.body.classList.add('site-visible');
+    if(window.console)console.error('faher giris:',hata);
+  }
 })();
