@@ -142,13 +142,27 @@
   d.querySelectorAll('main .fade').forEach(function(el){revealObserver.observe(el)});
   // All layout reads live here, outside the animation callback. Hero has no
   // containment/estimated height: real and portal copies share identical CSS.
+  // Telefonda ekran yuksekligi adres cubuguyla surekli oynuyor. Giris sahnesinin
+  // boyu buna bagli kalirsa (svh) giris-site gecis noktasi kayiyor ve gorseller
+  // ust uste biniyordu. Yukseklik bir kere olculup --ivh olarak sabitleniyor;
+  // sadece genislik degisince (yon degisimi) yenileniyor.
+  var olcuKutu=d.createElement('div');
+  olcuKutu.style.cssText='position:fixed;top:0;left:0;width:0;height:100lvh;visibility:hidden;pointer-events:none';
+  function olcIvh(){
+    d.body.appendChild(olcuKutu);
+    var h=olcuKutu.offsetHeight||innerHeight;
+    d.body.removeChild(olcuKutu);
+    root.style.setProperty('--ivh',h+'px');
+  }
   function measure(){
     layout();
     var y=pos(), sr=statement.getBoundingClientRect(), mr=mf.getBoundingClientRect();
-    metrics={start:lift.getBoundingClientRect().top+y,total:lift.offsetHeight-stage.offsetHeight,
+    // start duz yerlesim degeri. Kaydirma degeriyle hesaplanirsa telefonda suruklenip
+    // gecis esigini kaydiriyor.
+    metrics={start:lift.offsetTop,total:lift.offsetHeight-stage.offsetHeight,
       vh:stage.clientHeight, statementTop:sr.top+y,statementHeight:sr.height,
       mfTop:mr.top+y,mfHeight:mr.height,mobile:innerWidth<820};
-    lastY=NaN;lastProgress=-1;lastStage=-1;
+    lastY=NaN;lastProgress=-1;lastStage=-1;lastVisible=null;
     lenis.resize();
   }
   var measureTimer;
@@ -162,8 +176,7 @@
     // Nobetci: sahne olculeri sayfadan kayarsa (telefonda adres cubugu, yon degisimi,
     // gec yuklenen gorsel) kimse haber vermese de kendiliginden yeniden olc.
     if(assetsReady && ++tick%20===0){
-      var kayma=Math.abs(Math.round(lift.getBoundingClientRect().top+y)-metrics.start);
-      if(kayma>2 || Math.abs(lift.offsetHeight-stage.offsetHeight-metrics.total)>2)measure();
+      if(lift.offsetTop!==metrics.start || Math.abs(lift.offsetHeight-stage.offsetHeight-metrics.total)>2)measure();
     }
     if(assetsReady && y!==lastY){
       var dy=Number.isNaN(lastY)?0:y-lastY;lastY=y;
@@ -198,11 +211,19 @@
     }
     requestAnimationFrame(frame);
   }
+  olcIvh();
   measure();
-  window.addEventListener('resize',function(){scheduleMeasure();if(innerWidth>960 && d.body.classList.contains('open'))setOpen(false,false)});
-  window.addEventListener('pageshow',scheduleMeasure);
-  window.addEventListener('orientationchange',scheduleMeasure);
-  if(window.visualViewport)window.visualViewport.addEventListener('resize',scheduleMeasure);
+  // Sahne boyu sadece genislik degisince yenilenir. Adres cubugunun acilip kapanmasi
+  // (yukseklik degisimi) artik giris geometrisine dokunmuyor.
+  var sonGenislik=innerWidth;
+  function viewportDegisti(){
+    if(innerWidth!==sonGenislik){sonGenislik=innerWidth;olcIvh()}
+    scheduleMeasure();
+  }
+  window.addEventListener('resize',function(){viewportDegisti();if(innerWidth>960 && d.body.classList.contains('open'))setOpen(false,false)});
+  window.addEventListener('pageshow',viewportDegisti);
+  window.addEventListener('orientationchange',function(){sonGenislik=-1;viewportDegisti()});
+  if(window.visualViewport)window.visualViewport.addEventListener('resize',viewportDegisti);
   // Tarayici kaydirmayi kendi oynattiginda (adres cubugu, kaydirma capasi) kare yenilensin.
   window.addEventListener('scroll',function(){lastY=NaN},{passive:true});
   if(d.fonts)d.fonts.ready.then(scheduleMeasure);

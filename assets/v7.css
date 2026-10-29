@@ -21,7 +21,9 @@ body.open .mnav{clip-path:none;transform:translate3d(0,0,0)}
 .portal .hero{min-height:0}
 .big-foot img{width:min(100%,820px);height:auto;margin:50px auto}
 .brand img{height:50px;width:auto}
-.gallery-row{content-visibility:auto;contain-intrinsic-size:auto 900px;margin-bottom:clamp(54px,7vw,100px)}
+/* content-visibility kaldirildi: satirlar olculmeden once 900/1200px tahmin ediliyordu,
+   gercekleri 367-1833px cikinca sayfa boyu kaydirma sirasinda 4671px oynuyordu. */
+.gallery-row{margin-bottom:clamp(54px,7vw,100px)}
 .gallery-head{display:flex;align-items:baseline;gap:20px;border-top:1px solid var(--line);padding:28px 0 12px}
 .gallery-sum{color:var(--gray);max-width:64ch;margin:0 0 20px;font-size:15px;line-height:1.5}
 .gallery-head h3{font-size:clamp(32px,4.8vw,76px);font-weight:400;letter-spacing:-.05em;line-height:1.06;flex:1;min-width:0}
@@ -52,7 +54,38 @@ body.lightbox-open{overflow:hidden}
  .gallery-head h3{flex-basis:100%}
  .gallery-photo{margin-bottom:8px}
  .gallery-sum{font-size:14px;margin-bottom:16px}
- .gallery-row{contain-intrinsic-size:auto 1200px}
  .lightbox{padding:12px}.lightbox-foot{gap:10px;flex-wrap:wrap}
  .lightbox-foot #lightbox-caption{flex-basis:100%;order:5}
+}
+
+/* ---- Telefon duzeltmeleri (v8) ---- */
+@media(max-width:820px){
+ /* Giris sahnesi: yukseklik --ivh ile sabit piksel. svh/dvh kullanilinca adres
+    cubugu acilip kapaninca gecis noktasi kayiyor, giris ile hero ust uste biniyordu. */
+ .lift{height:calc(var(--ivh,100svh) * 3)}
+ .lift-stage{height:var(--ivh,100svh)}
+ main{margin-top:calc(var(--ivh,100svh) * -1)}
+ .portal .hero{min-height:var(--ivh,100svh)}
+ /* Olcum bir sebeple kisa kalirsa altta beyaz serit yerine sahne rengi gorunsun. */
+ body:not(.site-visible){background:#0b0b0c}
+ /* Giris artik 5,2 ekran degil 2 ekran kaydirmada akiyor. */
+ .intro-cue{bottom:78px;font-size:12px}
+ .intro-hero .wrap{padding-top:64px}
+
+ /* Dokunma hedefleri: parmak icin en az 44px */
+ .ct-rows a{min-height:46px;display:flex;align-items:center}
+ .foot-bar a{min-height:44px;display:inline-flex;align-items:center}
+ .mnav a{min-height:48px;display:flex;align-items:center}
+ .gallery-photo{min-height:44px}
+
+ /* Telefonda 10-12px yazilar okunmuyor */
+ .tag{font-size:13px}
+ .hero .hero-meta,.portal .hero-meta{font-size:13px;gap:12px 22px}
+ .hero .hero-meta dd a{min-height:44px;display:inline-flex;align-items:center}
+ .reel .lbl{font-size:13px}
+ .sc .meta{font-size:12px}
+ .label span{font-size:13px}
+ .kicker,.intro-hero .kicker{font-size:12px}
+ .foot-bar{font-size:13px}
+ .lightbox-foot #lightbox-caption{font-size:13px}
 }
