@@ -216,3 +216,69 @@
   .vt-item.on img{animation:none}
   .vt-track:not(.in) .vt-item{clip-path:none}
 }
+
+/* ---- Sahadan: dönen platform ---- */
+.saha{position:relative;color:#fff;overflow:hidden;
+  background:radial-gradient(90% 70% at 50% 72%,#1d3062 0%,#0e1a3d 48%,#070e22 100%)}
+.saha-in{padding:clamp(80px,10vw,150px) var(--gut) clamp(60px,7vw,100px)}
+.saha-head{display:grid;grid-template-columns:200px minmax(0,1fr);gap:0 clamp(20px,4vw,60px)}
+.saha-head .tag{color:#c9ab74;padding-top:12px}
+.saha-head h2{font-size:clamp(42px,6.2vw,100px);font-weight:400;letter-spacing:-.055em;line-height:1.02}
+.saha-head h2 em{font-weight:300;color:#e6cf9f}
+.saha-sum{grid-column:2;color:#b9c4da;font-size:clamp(14px,1.15vw,17px);max-width:52ch;margin-top:16px}
+.saha-stage{position:relative;height:calc(var(--h,360px) * 1.95);min-height:420px;margin-top:clamp(10px,2vw,30px);
+  perspective:1700px;perspective-origin:50% 30%;touch-action:pan-y;cursor:grab;user-select:none;-webkit-user-select:none}
+.saha-stage:active{cursor:grabbing}
+.saha-scene{position:absolute;left:50%;top:44%;width:0;height:0;transform-style:preserve-3d;transform:rotateX(-9deg)}
+.saha-ring{position:absolute;left:0;top:0;transform-style:preserve-3d;will-change:transform}
+.saha-card{position:absolute;left:calc(var(--w) / -2);top:calc(var(--h) / -2);width:var(--w);height:var(--h);padding:0;
+  border-radius:10px;overflow:hidden;background:#16244a;backface-visibility:hidden;-webkit-backface-visibility:hidden;cursor:inherit;
+  box-shadow:0 30px 60px -20px rgba(0,0,0,.6);outline:1px solid rgba(201,171,116,0);outline-offset:-1px;transition:outline-color .5s}
+.saha-card img{width:100%;height:100%;object-fit:cover;pointer-events:none;-webkit-user-drag:none}
+.saha-shade{position:absolute;inset:0;background:#070e22;opacity:.6;pointer-events:none}
+.saha-card.on{outline-color:rgba(201,171,116,.9);cursor:zoom-in}
+.saha-disk{position:absolute;left:0;top:0;transform:translate(-50%,-50%) translateY(calc(var(--h) / 2 + 26px)) rotateX(90deg);pointer-events:none}
+.saha-disk svg{width:100%;height:100%;display:block}
+.saha-glow{position:absolute;left:50%;bottom:4%;width:70%;height:30%;transform:translateX(-50%);pointer-events:none;
+  background:radial-gradient(50% 50% at 50% 50%,rgba(201,171,116,.18),rgba(201,171,116,0) 70%)}
+.saha-foot{display:flex;align-items:center;justify-content:space-between;gap:16px;border-top:1px solid rgba(255,255,255,.14);padding-top:22px}
+.saha-count{font-size:14px;color:#b9c4da;font-variant-numeric:tabular-nums;min-width:70px}
+.saha-hint{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:#7f8db0}
+.saha-btns{display:flex;gap:10px}
+.saha-arrow{width:54px;height:54px;border:1px solid rgba(255,255,255,.5);color:#fff;font-size:20px;display:grid;place-items:center;transition:background .4s,color .4s,border-color .4s}
+.saha-arrow:hover{background:#fff;color:var(--navy);border-color:#fff}
+@media (min-width:821px){.saha-card{-webkit-box-reflect:below 14px linear-gradient(transparent 72%,rgba(255,255,255,.16))}}
+@media (max-width:820px){
+  .saha-head{grid-template-columns:1fr;gap:16px}.saha-head .tag{padding-top:0}
+  .saha-head h2{font-size:clamp(38px,10.5vw,60px)}
+  .saha-sum{grid-column:1;margin-top:0;font-size:14px}
+  .saha-stage{perspective:900px;min-height:0;margin:10px calc(var(--gut) * -1) 0}
+  .saha-hint{display:none}
+  .saha-arrow{width:48px;height:48px}
+}
+
+/* ---- Zeminde çok silik FAHER filigranı (opaklık SVG'nin içinde: .02) ---- */
+main{background:#fff url(filigran.svg) 0 0/560px auto repeat}
+@media (max-width:820px){main{background-size:400px auto}}
+
+/* ---- Lacivert imleç (sadece fareli cihazlar) ---- */
+@media (hover:hover) and (pointer:fine){
+  html.imlec,html.imlec *{cursor:none!important}
+  html.imlec body.lightbox-open,html.imlec body.lightbox-open *{cursor:auto!important}
+}
+.imlec-nokta,.imlec-halka{position:fixed;left:0;top:0;z-index:9999;pointer-events:none;border-radius:50%;opacity:0;transition:opacity .3s}
+.imlec-nokta{width:8px;height:8px;margin:-4px 0 0 -4px;background:var(--navy);transition:opacity .3s,transform .25s var(--ease),background .3s}
+.imlec-halka{width:40px;height:40px;margin:-20px 0 0 -20px;border:1.5px solid var(--navy);display:grid;place-items:center;
+  font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#fff;
+  transition:opacity .3s,width .45s var(--ease),height .45s var(--ease),margin .45s var(--ease),background .4s,border-color .4s}
+.imlec-on .imlec-nokta,.imlec-on .imlec-halka{opacity:1}
+.imlec-link .imlec-halka{width:62px;height:62px;margin:-31px 0 0 -31px;background:rgba(11,21,48,.07)}
+.imlec-link .imlec-nokta{transform:scale(.5)}
+.imlec-etiket .imlec-halka{width:86px;height:86px;margin:-43px 0 0 -43px;background:var(--navy);border-color:var(--navy)}
+.imlec-etiket .imlec-nokta{opacity:0}
+.imlec-bas .imlec-halka{width:32px;height:32px;margin:-16px 0 0 -16px}
+.imlec-koyu .imlec-nokta{background:#e6cf9f}
+.imlec-koyu .imlec-halka{border-color:#e6cf9f}
+.imlec-koyu.imlec-link .imlec-halka{background:rgba(230,207,159,.12)}
+.imlec-koyu.imlec-etiket .imlec-halka{background:#e6cf9f;border-color:#e6cf9f;color:var(--navy)}
+body.lightbox-open .imlec-nokta,body.lightbox-open .imlec-halka{opacity:0!important}

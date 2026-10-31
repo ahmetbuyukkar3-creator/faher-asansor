@@ -190,9 +190,9 @@
   const bCnt = document.getElementById('lightbox-counter');
   const bSt = document.getElementById('lightbox-status');
   const bClose = box.querySelector('[data-close]');
-  let bi = 0, token = 0, opener;
+  let bi = 0, token = 0, opener, liste = null, disari = null;   // liste: açık fotoğraflar; disari: Sahadan gibi başka bölümden açıldıysa
   async function show(i) {
-    const ps = cats[cat].photos; bi = (i + ps.length) % ps.length;
+    const ps = liste; bi = (i + ps.length) % ps.length;
     const p = ps[bi], req = ++token;
     bImg.style.opacity = '0'; bSt.textContent = 'Fotoğraf yükleniyor…';
     bCap.textContent = p.caption; bCnt.textContent = `${bi + 1} / ${ps.length}`;
@@ -205,9 +205,9 @@
       new Image().src = ps[(bi + 1) % ps.length].large;
     } catch (_) { if (req === token) bSt.textContent = 'Fotoğraf yüklenemedi. Diğer fotoğraflara geçebilirsiniz.'; }
   }
-  function openBox(i, trigger) {
-    opener = trigger;
-    document.getElementById('lightbox-title').textContent = cats[cat].title;
+  function openBox(i, trigger, list, title, onClose) {
+    opener = trigger; liste = list || cats[cat].photos; disari = onClose || null;
+    document.getElementById('lightbox-title').textContent = title || cats[cat].title;
     window.faherScroll?.stop();
     document.body.classList.add('lightbox-open');
     box.showModal(); bClose.focus(); show(i);
@@ -217,7 +217,7 @@
     token++; bImg.removeAttribute('src');
     document.body.classList.remove('lightbox-open');
     window.faherScroll?.start();
-    go(bi); opener = items[bi]?.node || opener;
+    if (disari) disari(bi); else { go(bi); opener = items[bi]?.node || opener; }
     opener?.focus({preventScroll: true});
     touch();
   });
@@ -241,5 +241,7 @@
     if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) show(bi + (dx < 0 ? 1 : -1));
   }, {passive: true});
 
+  /* Sahadan halkası aynı tam ekranı kullanır */
+  window.faherKutu = (list, title, i, trigger, onClose) => openBox(i, trigger, list, title, onClose);
   setCat(0, true);
 })();

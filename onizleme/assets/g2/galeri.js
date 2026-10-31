@@ -552,121 +552,6 @@ window.FAHER_VITRIN = {
    ]
   },
   {
-   "id": "projeler",
-   "title": "Tamamlanan projeler",
-   "summary": "Asansörlerini kurduğumuz konut ve ticari binalardan.",
-   "photos": [
-    {
-     "id": "F051",
-     "thumb": "assets/g2/projeler01t.webp",
-     "large": "assets/g2/projeler01b.webp",
-     "mid": "assets/g2/projeler01m.webp",
-     "midWidth": 825,
-     "width": 420,
-     "height": 560,
-     "largeWidth": 1350,
-     "largeHeight": 1800,
-     "caption": "Tamamlanan projeler · 01"
-    },
-    {
-     "id": "F107",
-     "thumb": "assets/g2/projeler02t.webp",
-     "large": "assets/g2/projeler02b.webp",
-     "mid": "assets/g2/projeler02m.webp",
-     "midWidth": 825,
-     "width": 420,
-     "height": 560,
-     "largeWidth": 1350,
-     "largeHeight": 1800,
-     "caption": "Tamamlanan projeler · 02"
-    },
-    {
-     "id": "F043",
-     "thumb": "assets/g2/projeler03t.webp",
-     "large": "assets/g2/projeler03b.webp",
-     "mid": "assets/g2/projeler03m.webp",
-     "midWidth": 825,
-     "width": 420,
-     "height": 560,
-     "largeWidth": 1350,
-     "largeHeight": 1800,
-     "caption": "Tamamlanan projeler · 03"
-    },
-    {
-     "id": "F049",
-     "thumb": "assets/g2/projeler04t.webp",
-     "large": "assets/g2/projeler04b.webp",
-     "mid": "assets/g2/projeler04m.webp",
-     "midWidth": 825,
-     "width": 420,
-     "height": 560,
-     "largeWidth": 1350,
-     "largeHeight": 1800,
-     "caption": "Tamamlanan projeler · 04"
-    },
-    {
-     "id": "F054",
-     "thumb": "assets/g2/projeler05t.webp",
-     "large": "assets/g2/projeler05b.webp",
-     "mid": "assets/g2/projeler05m.webp",
-     "midWidth": 976,
-     "width": 497,
-     "height": 560,
-     "largeWidth": 1500,
-     "largeHeight": 1690,
-     "caption": "Tamamlanan projeler · 05"
-    },
-    {
-     "id": "F112",
-     "thumb": "assets/g2/projeler06t.webp",
-     "large": "assets/g2/projeler06b.webp",
-     "mid": "assets/g2/projeler06m.webp",
-     "midWidth": 825,
-     "width": 420,
-     "height": 560,
-     "largeWidth": 1350,
-     "largeHeight": 1800,
-     "caption": "Tamamlanan projeler · 06"
-    },
-    {
-     "id": "F109",
-     "thumb": "assets/g2/projeler07t.webp",
-     "large": "assets/g2/projeler07b.webp",
-     "mid": "assets/g2/projeler07m.webp",
-     "midWidth": 825,
-     "width": 420,
-     "height": 560,
-     "largeWidth": 1350,
-     "largeHeight": 1800,
-     "caption": "Tamamlanan projeler · 07"
-    },
-    {
-     "id": "F061",
-     "thumb": "assets/g2/projeler08t.webp",
-     "large": "assets/g2/projeler08b.webp",
-     "mid": "assets/g2/projeler08m.webp",
-     "midWidth": 825,
-     "width": 420,
-     "height": 560,
-     "largeWidth": 1350,
-     "largeHeight": 1800,
-     "caption": "Tamamlanan projeler · 08"
-    },
-    {
-     "id": "F105",
-     "thumb": "assets/g2/projeler09t.webp",
-     "large": "assets/g2/projeler09b.webp",
-     "mid": "assets/g2/projeler09m.webp",
-     "midWidth": 825,
-     "width": 420,
-     "height": 560,
-     "largeWidth": 1350,
-     "largeHeight": 1800,
-     "caption": "Tamamlanan projeler · 09"
-    }
-   ]
-  },
-  {
    "id": "okul",
    "title": "Okul projesi",
    "summary": "Bir eğitim binası için kurulan asansör sistemi.",
@@ -933,66 +818,176 @@ window.FAHER_VITRIN = {
      "caption": "Merkez ve araçlar · 03"
     },
     {
-     "id": "F057",
+     "id": "F128",
      "thumb": "assets/g2/kurumsal04t.webp",
      "large": "assets/g2/kurumsal04b.webp",
      "mid": "assets/g2/kurumsal04m.webp",
-     "midWidth": 825,
-     "width": 420,
-     "height": 560,
-     "largeWidth": 1350,
-     "largeHeight": 1800,
-     "caption": "Merkez ve araçlar · 04"
-    },
-    {
-     "id": "F064",
-     "thumb": "assets/g2/kurumsal05t.webp",
-     "large": "assets/g2/kurumsal05b.webp",
-     "mid": "assets/g2/kurumsal05m.webp",
-     "midWidth": 1100,
-     "width": 560,
-     "height": 420,
-     "largeWidth": 1800,
-     "largeHeight": 1350,
-     "caption": "Merkez ve araçlar · 05"
-    },
-    {
-     "id": "F128",
-     "thumb": "assets/g2/kurumsal06t.webp",
-     "large": "assets/g2/kurumsal06b.webp",
-     "mid": "assets/g2/kurumsal06m.webp",
      "midWidth": 619,
      "width": 315,
      "height": 560,
      "largeWidth": 1012,
      "largeHeight": 1800,
-     "caption": "Merkez ve araçlar · 06"
+     "caption": "Merkez ve araçlar · 04"
     },
     {
      "id": "F053",
-     "thumb": "assets/g2/kurumsal07t.webp",
-     "large": "assets/g2/kurumsal07b.webp",
-     "mid": "assets/g2/kurumsal07m.webp",
+     "thumb": "assets/g2/kurumsal05t.webp",
+     "large": "assets/g2/kurumsal05b.webp",
+     "mid": "assets/g2/kurumsal05m.webp",
      "midWidth": 825,
      "width": 420,
      "height": 560,
      "largeWidth": 1200,
      "largeHeight": 1600,
-     "caption": "Merkez ve araçlar · 07"
+     "caption": "Merkez ve araçlar · 05"
     },
     {
      "id": "F055",
-     "thumb": "assets/g2/kurumsal08t.webp",
-     "large": "assets/g2/kurumsal08b.webp",
-     "mid": "assets/g2/kurumsal08m.webp",
+     "thumb": "assets/g2/kurumsal06t.webp",
+     "large": "assets/g2/kurumsal06b.webp",
+     "mid": "assets/g2/kurumsal06m.webp",
      "midWidth": 825,
      "width": 420,
      "height": 560,
      "largeWidth": 1200,
      "largeHeight": 1600,
-     "caption": "Merkez ve araçlar · 08"
+     "caption": "Merkez ve araçlar · 06"
     }
    ]
   }
  ]
 };
+window.FAHER_SAHA = [
+ {
+  "id": "F051",
+  "thumb": "assets/g2/saha01t.webp",
+  "mid": "assets/g2/saha01m.webp",
+  "large": "assets/g2/saha01b.webp",
+  "midWidth": 825,
+  "width": 420,
+  "height": 560,
+  "largeWidth": 1350,
+  "largeHeight": 1800,
+  "caption": "Tamamlanan proje · 01"
+ },
+ {
+  "id": "F107",
+  "thumb": "assets/g2/saha02t.webp",
+  "mid": "assets/g2/saha02m.webp",
+  "large": "assets/g2/saha02b.webp",
+  "midWidth": 825,
+  "width": 420,
+  "height": 560,
+  "largeWidth": 1350,
+  "largeHeight": 1800,
+  "caption": "Tamamlanan proje · 02"
+ },
+ {
+  "id": "F043",
+  "thumb": "assets/g2/saha03t.webp",
+  "mid": "assets/g2/saha03m.webp",
+  "large": "assets/g2/saha03b.webp",
+  "midWidth": 825,
+  "width": 420,
+  "height": 560,
+  "largeWidth": 1350,
+  "largeHeight": 1800,
+  "caption": "Tamamlanan proje · 03"
+ },
+ {
+  "id": "F049",
+  "thumb": "assets/g2/saha04t.webp",
+  "mid": "assets/g2/saha04m.webp",
+  "large": "assets/g2/saha04b.webp",
+  "midWidth": 825,
+  "width": 420,
+  "height": 560,
+  "largeWidth": 1350,
+  "largeHeight": 1800,
+  "caption": "Tamamlanan proje · 04"
+ },
+ {
+  "id": "F057",
+  "thumb": "assets/g2/saha05t.webp",
+  "mid": "assets/g2/saha05m.webp",
+  "large": "assets/g2/saha05b.webp",
+  "midWidth": 825,
+  "width": 420,
+  "height": 560,
+  "largeWidth": 1350,
+  "largeHeight": 1800,
+  "caption": "Tamamlanan proje · 05"
+ },
+ {
+  "id": "F054",
+  "thumb": "assets/g2/saha06t.webp",
+  "mid": "assets/g2/saha06m.webp",
+  "large": "assets/g2/saha06b.webp",
+  "midWidth": 976,
+  "width": 497,
+  "height": 560,
+  "largeWidth": 1500,
+  "largeHeight": 1690,
+  "caption": "Tamamlanan proje · 06"
+ },
+ {
+  "id": "F112",
+  "thumb": "assets/g2/saha07t.webp",
+  "mid": "assets/g2/saha07m.webp",
+  "large": "assets/g2/saha07b.webp",
+  "midWidth": 825,
+  "width": 420,
+  "height": 560,
+  "largeWidth": 1350,
+  "largeHeight": 1800,
+  "caption": "Tamamlanan proje · 07"
+ },
+ {
+  "id": "F109",
+  "thumb": "assets/g2/saha08t.webp",
+  "mid": "assets/g2/saha08m.webp",
+  "large": "assets/g2/saha08b.webp",
+  "midWidth": 825,
+  "width": 420,
+  "height": 560,
+  "largeWidth": 1350,
+  "largeHeight": 1800,
+  "caption": "Tamamlanan proje · 08"
+ },
+ {
+  "id": "F064",
+  "thumb": "assets/g2/saha09t.webp",
+  "mid": "assets/g2/saha09m.webp",
+  "large": "assets/g2/saha09b.webp",
+  "midWidth": 1100,
+  "width": 560,
+  "height": 420,
+  "largeWidth": 1800,
+  "largeHeight": 1350,
+  "caption": "Tamamlanan proje · 09"
+ },
+ {
+  "id": "F061",
+  "thumb": "assets/g2/saha10t.webp",
+  "mid": "assets/g2/saha10m.webp",
+  "large": "assets/g2/saha10b.webp",
+  "midWidth": 825,
+  "width": 420,
+  "height": 560,
+  "largeWidth": 1350,
+  "largeHeight": 1800,
+  "caption": "Tamamlanan proje · 10"
+ },
+ {
+  "id": "F105",
+  "thumb": "assets/g2/saha11t.webp",
+  "mid": "assets/g2/saha11m.webp",
+  "large": "assets/g2/saha11b.webp",
+  "midWidth": 825,
+  "width": 420,
+  "height": 560,
+  "largeWidth": 1350,
+  "largeHeight": 1800,
+  "caption": "Tamamlanan proje · 11"
+ }
+];
