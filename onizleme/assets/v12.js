@@ -114,12 +114,3 @@
   /* pencereden ya da Google harita çerçevesine çıkınca gizlen (çerçevenin kendi imleci var) */
   document.addEventListener('mouseout', e => { if (!e.relatedTarget || e.relatedTarget.tagName === 'IFRAME') body.classList.remove('imlec-on'); });
 })();
-
-/* Süreç çizelgesi: bölüm görününce çizgi dolar, adımlar sırayla gelir */
-(function () {
-  const s = document.getElementById('steps');
-  if (!s) return;
-  if (!('IntersectionObserver' in window) || window.matchMedia('(prefers-reduced-motion: reduce)').matches) { s.classList.add('on'); return; }
-  const io = new IntersectionObserver(es => { if (es[0].isIntersecting) { s.classList.add('on'); io.disconnect(); } }, {threshold: .3});
-  io.observe(s);
-})();

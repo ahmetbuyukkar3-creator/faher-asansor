@@ -35,14 +35,34 @@
 
   let cat = 0, cur = 0, items = [], timer = null, lastTouch = 0, inView = false, padL = 0;
 
+  /* v14 kapaklar: her bölümün en iyi 2-3 karesi gözle seçildi (galeri sırasındaki yerleri).
+     Kart yavaşça yakınlaşır, kapaklar sırayla birbirine geçer. Bilinmeyen bölüm ilk kareyi kullanır. */
+  const KAPAK = {kabin: [0, 2, 3], ozel: [0, 1, 2], 'kapi-buton': [2, 3, 7], makine: [0, 2, 5], montaj: [9, 2, 0],
+    okul: [0, 1], guvenlik: [0, 3], depo: [0, 2, 3], kurumsal: [2, 0, 5]};
+  const coverSet = c => {
+    const ps = (KAPAK[c.id] || [0]).map(k => c.photos[k]).filter(Boolean);
+    return ps.length ? ps : [c.photos[0]];
+  };
+  const coverImg = p => {
+    const im = el('img', 'vt-cv'); im.alt = ''; im.decoding = 'async';
+    im.width = p.width; im.height = p.height;
+    im.srcset = `${p.thumb} ${p.width}w, ${p.mid} ${p.midWidth}w`;
+    im.sizes = '(max-width:820px) 190px, 34vw';
+    im.src = p.thumb; return im;
+  };
+  const covers = [];
+
   const tabBtns = cats.map((c, i) => {
     /* Bölüm kartı: kapak fotoğrafı + ad + fotoğraf sayısı. Düz yazı sekme tıklanabilir görünmüyordu. */
     const b = el('button', 'vt-tab'); b.type = 'button'; b.setAttribute('role', 'tab');
-    const cover = el('img'); cover.alt = ''; cover.loading = 'lazy'; cover.decoding = 'async';
-    cover.src = c.photos[0].thumb; cover.width = c.photos[0].width; cover.height = c.photos[0].height;
+    b.style.setProperty('--k', i);
+    const set = coverSet(c);
+    const first = coverImg(set[0]); first.loading = 'lazy'; first.classList.add('on');
+    covers.push({b, set, k: 0, imgs: [first]});
     const cap = el('span', 'vt-tab-cap');
     cap.append(el('span', 'vt-tab-n', pad(i + 1)), el('b', null, c.title), el('span', 'vt-tab-c', `${c.photos.length} fotoğraf`));
-    b.append(cover, cap);
+    const ar = el('span', 'vt-tab-ar', '↗'); ar.setAttribute('aria-hidden', 'true');
+    b.append(first, cap, ar);
     b.addEventListener('click', () => {
       touch(); setCat(i);
       /* şerit ekranın altında kaldıysa sayfayı başlığa getir */
@@ -53,6 +73,36 @@
     });
     tabs.append(b); return b;
   });
+
+  /* ---- kapak canlandırma ----
+     Giriş: kartlar ekrana gelince sırayla perde gibi açılır (.vt-tabs.in).
+     Sonra her 2,6 sn'de SIRADAKİ tek kart bir sonraki kapağına geçer; aynı anda tek geçiş olur, bütçe telefonu yormaz.
+     Yeni kapak önce indirilip çözülür, sonra solarak gelir. Bölüm ekranda değilken her şey durur. */
+  let cvTimer = null, cvTurn = 0, cvSeen = false;
+  async function swapCover(cv) {
+    if (cv.set.length < 2) return;
+    const nk = (cv.k + 1) % cv.set.length;
+    let im = cv.imgs[nk];
+    if (!im) { im = coverImg(cv.set[nk]); cv.imgs[nk] = im; cv.b.insertBefore(im, cv.b.querySelector('.vt-tab-cap')); }
+    try { await im.decode(); } catch (_) { return; }
+    const old = cv.imgs[cv.k];
+    im.classList.add('on'); old.classList.remove('on');
+    cv.k = nk;
+  }
+  function cvTick() {
+    const many = covers.filter(c => c.set.length > 1);
+    if (many.length && !document.hidden && !box.open) swapCover(many[cvTurn++ % many.length]);
+    cvTimer = setTimeout(cvTick, 2600);
+  }
+  if (!reduce && 'IntersectionObserver' in window) {
+    new IntersectionObserver(es => {
+      const vis = es[0].isIntersecting;
+      tabsWrap.classList.toggle('hareket', vis);
+      if (vis && !cvSeen) { cvSeen = true; tabs.classList.add('in'); }
+      clearTimeout(cvTimer);
+      if (vis) cvTimer = setTimeout(cvTick, cvSeen ? 1800 : 1800 + cats.length * 90);
+    }, {threshold: .2}).observe(tabsWrap);
+  } else tabs.classList.add('in');
 
   /* ---- ölçü: telefonda ekranın ~%60'ı, masaüstünde ~%70'i yükseklik; geniş kare ekrana sığdırılır ---- */
   function size() {
