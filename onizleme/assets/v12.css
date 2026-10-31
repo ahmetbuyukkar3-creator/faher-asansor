@@ -282,3 +282,58 @@ main{background:#fff url(filigran.svg) 0 0/560px auto repeat}
 .imlec-koyu.imlec-link .imlec-halka{background:rgba(230,207,159,.12)}
 .imlec-koyu.imlec-etiket .imlec-halka{background:#e6cf9f;border-color:#e6cf9f;color:var(--navy)}
 body.lightbox-open .imlec-nokta,body.lightbox-open .imlec-halka{opacity:0!important}
+
+/* ===== v13 sadeleştirme ===== */
+/* Hizmetler altı: sistemler + markalar tek blok */
+.svc-ek{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:clamp(24px,5vw,90px);margin-top:clamp(40px,5vw,70px)}
+.svc-sys ul{list-style:none;margin-top:14px;border-top:1px solid var(--ink)}
+.svc-sys li{font-size:clamp(20px,2vw,30px);letter-spacing:-.04em;padding:14px 0;border-bottom:1px solid var(--line)}
+.svc-brands dl{margin-top:14px;border-top:1px solid var(--ink)}
+.svc-brands dl>div{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:16px;align-items:baseline;padding:14px 0;border-bottom:1px solid var(--line)}
+.svc-brands dt{font-size:13px;color:var(--gray)}
+.svc-brands dd{font-size:clamp(17px,1.5vw,22px);letter-spacing:-.03em}
+
+/* Süreç: 4 adımlı çizelge, çizgi bölüme gelince dolar */
+.steps{position:relative;list-style:none;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(16px,2.4vw,40px);padding-top:34px}
+.steps-line{position:absolute;left:0;right:0;top:0;height:2px;background:var(--line)}
+.steps-line i{display:block;height:100%;background:var(--navy);transform:scaleX(0);transform-origin:left;transition:transform 2.2s var(--io) .2s}
+.steps.on .steps-line i{transform:none}
+.steps li{position:relative;display:flex;flex-direction:column;gap:12px;opacity:0;transform:translateY(18px);
+  transition:opacity .8s var(--ease) calc(.3s + var(--i) * .45s),transform .8s var(--ease) calc(.3s + var(--i) * .45s)}
+.steps li::before{content:"";position:absolute;left:0;top:-40px;width:12px;height:12px;background:#fff;border:2px solid var(--navy);border-radius:50%;
+  transition:background .4s calc(.3s + var(--i) * .45s)}
+.steps.on li{opacity:1;transform:none}
+.steps.on li::before{background:var(--navy)}
+.st-n{font-size:clamp(54px,6vw,96px);font-weight:300;letter-spacing:-.06em;line-height:.9;color:var(--navy)}
+.steps h3{font-size:clamp(22px,2vw,30px);font-weight:400;letter-spacing:-.04em}
+.steps p{color:var(--ink-2);font-size:15px;max-width:34ch}
+.st-m{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--gray);margin-top:auto;padding-top:10px;border-top:1px solid var(--line)}
+
+@media (max-width:820px){
+  .svc-ek{grid-template-columns:1fr;gap:34px}
+  .svc-sys ul{display:grid;grid-template-columns:1fr 1fr;column-gap:16px}
+  .svc-sys li{font-size:17px;padding:12px 0}
+  .svc-brands dl>div{grid-template-columns:1fr;gap:4px;padding:12px 0}
+  /* Süreç: dikey çizelge, solda dolan çizgi */
+  .steps{grid-template-columns:1fr;gap:26px;padding:0 0 0 30px}
+  .steps-line{left:5px;right:auto;top:6px;bottom:6px;width:2px;height:auto}
+  .steps-line i{width:100%;height:100%;transform:scaleY(0);transform-origin:top}
+  .steps.on .steps-line i{transform:none}
+  .steps li{display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 14px;align-items:baseline}
+  .steps li::before{left:-30px;top:6px}
+  .st-n{font-size:34px;grid-row:span 2}
+  .steps h3{font-size:22px}
+  .steps p{font-size:14px;grid-column:2}
+  .st-m{display:none}
+  /* Güvenlik ve iletişim telefonda daha toplu */
+  .safety-grid{gap:20px}
+  .labels{display:grid;grid-template-columns:1fr 1fr;column-gap:16px}
+  .label{padding:16px 0;grid-template-columns:12px minmax(0,1fr);gap:4px 10px}
+  .label span{grid-column:2}
+  .ct{padding-top:80px}
+  .ct-rows{margin-top:40px}
+  .ct-map-frame{aspect-ratio:1/1}
+  .big-foot{margin-top:30px}
+  .big-foot img{width:min(70%,260px);margin:24px auto}
+}
+@media (prefers-reduced-motion:reduce){.steps li,.steps-line i,.steps li::before{transition:none}}
