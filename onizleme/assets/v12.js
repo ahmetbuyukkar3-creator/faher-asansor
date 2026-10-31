@@ -86,7 +86,7 @@
   body.append(dot, ring);
   root.classList.add('imlec');
   let x = -100, y = -100, rx = -100, ry = -100, raf = 0;
-  const KOYU = '.lift,.saha,.bolge-map,.btn-k,.fab,.vt-tab[aria-selected="true"] .vt-tab-cap';
+  const KOYU = '.lift,.saha,.hz-svc,.hz-sys,.bolge-map,.btn-k,.fab,.vt-tab[aria-selected="true"] .vt-tab-cap';
   const LINK = 'a,button,[role="tab"],summary,label,.bolge-list li';
   const loop = () => {
     rx += (x - rx) * (reduce ? 1 : .2); ry += (y - ry) * (reduce ? 1 : .2);

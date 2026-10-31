@@ -7,7 +7,7 @@
   const stage = document.getElementById('saha-stage');
   const ring = document.getElementById('saha-ring');
   if (!stage || !ring || !photos.length) return;
-  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches && !/[?&]hareket/.test(location.search);   // ?hareket: önizlemede tam hareket
   const narrow = () => window.matchMedia('(max-width: 820px)').matches;
   const count = document.getElementById('saha-count');
   const pad = n => String(n).padStart(2, '0');

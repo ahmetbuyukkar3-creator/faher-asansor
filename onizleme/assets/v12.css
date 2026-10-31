@@ -178,7 +178,7 @@
 .vt-tab[aria-selected="true"] .vt-cv{filter:saturate(1) contrast(1.04)}
 .vt-tab[aria-selected="true"]::before{background:linear-gradient(180deg,rgba(11,21,48,0) 25%,rgba(11,21,48,.95))}
 .vt-tab[aria-selected="true"] .vt-tab-n::after{content:" · gösteriliyor";letter-spacing:.06em}
-@media (prefers-reduced-motion:reduce){.vt-cv{transition:none;animation:none!important}.vt-tabs .vt-tab{clip-path:none!important;transition:none!important}}
+.az-hareket .vt-cv{animation:none!important;transform:none}.az-hareket .vt-tabs .vt-tab{clip-path:none!important;transition:outline-color .4s}
 .vt-head{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;margin-bottom:clamp(20px,2.4vw,34px);transition:opacity .35s var(--ease),transform .35s var(--ease)}
 .vt-head.swap{opacity:0;transform:translateY(10px)}
 .vt-htext{min-width:0}
@@ -326,3 +326,29 @@ body.lightbox-open .imlec-nokta,body.lightbox-open .imlec-halka{opacity:0!import
   .big-foot{margin-top:30px}
   .big-foot img{width:min(70%,260px);margin:24px auto}
 }
+
+/* v15 "Her katta güven" filmi (assets/film.js). Kaydırma efekti site.js'te, aynen duruyor. */
+.stage-film .kf{position:absolute;inset:0;transform-origin:center;pointer-events:none}
+.stage-film .kf-l{position:absolute;inset:0;overflow:hidden;opacity:0;visibility:hidden}
+.stage-film .kf-l.on{opacity:1;visibility:visible}
+.stage-film .kf-l.ust{z-index:2}
+.stage-film .kf-l img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform:scale(1.15);transform-origin:50% 55%;backface-visibility:hidden}
+.kf.oynuyor .kf-l.oynat img{animation:kf-cek 6.2s cubic-bezier(.22,.6,.3,1) forwards}
+@keyframes kf-cek{from{transform:scale(1.15)}to{transform:scale(1.01)}}
+/* geçişler: kapı (ortadan açılır), kat (alttan yükselir), sol (solarak) */
+.stage-film .kf-l.sol{transition:opacity 1.4s ease}
+.stage-film .kf-l.kapi,.stage-film .kf-l.kat{opacity:1;visibility:visible;transition:clip-path 1.5s cubic-bezier(.7,0,.2,1)}
+.stage-film .kf-l.kapi{clip-path:inset(0 50% 0 50%)}
+.stage-film .kf-l.kat{clip-path:inset(100% 0 0 0)}
+.stage-film .kf-l.kapi.on,.stage-film .kf-l.kat.on{clip-path:inset(0 0 0 0)}
+.kf-shade{position:absolute;inset:0;z-index:3;background:linear-gradient(180deg,rgba(11,21,48,.38),rgba(11,21,48,.12) 42%,rgba(11,21,48,.55));opacity:0;transition:opacity .8s}
+.stage-pin.cov .kf-shade{opacity:1}
+/* çekim sayacı: ince çizgiler, film tam ekranken görünür */
+.kf-bar{position:absolute;left:var(--gut);right:var(--gut);bottom:64px;display:flex;gap:6px;z-index:2;opacity:0;transition:opacity .6s;pointer-events:none}
+.stage-pin.cov .kf-bar{opacity:1}
+.kf-bar span{flex:1;height:2px;background:rgba(255,255,255,.28);overflow:hidden}
+.kf-bar i{display:block;height:100%;background:#fff;transform:scaleX(0);transform-origin:left}
+.kf-bar .bitti i{transform:scaleX(1)!important;transition:none!important}
+.az-hareket .stage-film .kf-l img{animation:none!important;transform:none}
+.az-hareket .stage-film .kf-l{transition:opacity 1.4s ease}
+@media (max-width:820px){.kf-bar{bottom:58px;gap:4px}}

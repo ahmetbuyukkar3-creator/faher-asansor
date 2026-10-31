@@ -94,7 +94,11 @@
     if (many.length && !document.hidden && !box.open) swapCover(many[cvTurn++ % many.length]);
     cvTimer = setTimeout(cvTick, 2600);
   }
-  if (!reduce && 'IntersectionObserver' in window) {
+  /* Hareketi azalt açık cihazda kapaklar yine değişir ama sadece solarak (perde ve yakınlaşma yok).
+     ?hareket ile bu cihazlarda da tam hali görünür. */
+  const kapakAz = reduce && !/[?&]hareket/.test(location.search);
+  if (kapakAz) { document.documentElement.classList.add('az-hareket'); tabs.classList.add('in'); }
+  if ('IntersectionObserver' in window) {
     new IntersectionObserver(es => {
       const vis = es[0].isIntersecting;
       tabsWrap.classList.toggle('hareket', vis);
