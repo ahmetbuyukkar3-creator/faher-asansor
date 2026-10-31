@@ -14,7 +14,9 @@
 
   /* ---- iskelet ---- */
   const tabs = el('div', 'vt-tabs'); tabs.setAttribute('role', 'tablist'); tabs.setAttribute('aria-label', 'Galeri bölümleri');
-  const tabsWrap = el('div', 'vt-tabs-wrap'); tabsWrap.append(tabs);
+  const tabsWrap = el('div', 'vt-tabs-wrap');
+  const tabsLbl = el('p', 'vt-tabs-lbl tag', `Bölüm seçin · ${cats.length} bölüm`);
+  tabsWrap.append(tabsLbl, tabs);
   const head = el('div', 'vt-head');
   const hNum = el('span', 'vt-num tag');
   const hTitle = el('h3', 'vt-title');
@@ -34,10 +36,21 @@
   let cat = 0, cur = 0, items = [], timer = null, lastTouch = 0, inView = false, padL = 0;
 
   const tabBtns = cats.map((c, i) => {
+    /* Bölüm kartı: kapak fotoğrafı + ad + fotoğraf sayısı. Düz yazı sekme tıklanabilir görünmüyordu. */
     const b = el('button', 'vt-tab'); b.type = 'button'; b.setAttribute('role', 'tab');
-    b.append(document.createTextNode(c.title));
-    const sup = el('sup', null, pad(c.photos.length)); b.append(sup);
-    b.addEventListener('click', () => { touch(); setCat(i); });
+    const cover = el('img'); cover.alt = ''; cover.loading = 'lazy'; cover.decoding = 'async';
+    cover.src = c.photos[0].thumb; cover.width = c.photos[0].width; cover.height = c.photos[0].height;
+    const cap = el('span', 'vt-tab-cap');
+    cap.append(el('span', 'vt-tab-n', pad(i + 1)), el('b', null, c.title), el('span', 'vt-tab-c', `${c.photos.length} fotoğraf`));
+    b.append(cover, cap);
+    b.addEventListener('click', () => {
+      touch(); setCat(i);
+      /* şerit ekranın altında kaldıysa sayfayı başlığa getir */
+      if (strip.getBoundingClientRect().top > window.innerHeight * .55) {
+        const y = head.getBoundingClientRect().top + window.scrollY - 90;
+        if (window.faherScroll?.scrollTo) window.faherScroll.scrollTo(y); else window.scrollTo({top: y, behavior: reduce ? 'auto' : 'smooth'});
+      }
+    });
     tabs.append(b); return b;
   });
 
